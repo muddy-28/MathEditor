@@ -1,0 +1,25 @@
+AddCharset UTF-8 .html .xml .css .js .json
+
+#deflate_module
+<IfModule deflate_module>
+	SetOutputFilter DEFLATE
+	AddOutputFilterByType DEFLATE text/text text/plain text/xml text/html text/css text/javascript image/svg+xml application/xhtml+xml application/xml application/rss+xml application/atom_xml application/x-javascript
+</IfModule>
+
+#headers_module
+<IfModule headers_module>
+	<FilesMatch "\.(xml|js|json|css|gif|jpg|jpeg|png|ico)$">
+		Header unset Cookie
+		Header unset Set-Cookie
+	</FilesMatch>
+
+	<FilesMatch "\.(html|xml|js|json|css|gif|jpg|jpeg|png|ico)$">
+		Header set Cache-Control "max-age=604800"
+		Header append Cache-Control "public" 
+		Header set vary  "Accept-Encoding"
+		Header append vary "User-Agent"
+		Header append Connection "Keep-Alive"
+		Header append Keep-Alive "timeout=5, max=100"
+		FileETag None
+	</FilesMatch>
+</IfModule>
